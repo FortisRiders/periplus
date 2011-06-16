@@ -1,6 +1,6 @@
 = periplus
 
-Description goes here.
+Bing Maps REST API client.
 
 == Contributing to periplus
  
