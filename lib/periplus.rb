@@ -14,7 +14,7 @@ module Periplus
       options = options.merge hashify_waypoints(waypoints)
       options = options.merge :o => "json", :key => @key
       puts "sending options: #{options}"
-      self.class.get base_url, :query => options.merge(hashify_waypoints(waypoints))      
+      Route.new (self.class.get base_url, :query => options.merge(hashify_waypoints(waypoints)))
     end
 
     private
