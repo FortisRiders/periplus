@@ -10,7 +10,8 @@ Bing Maps REST API client.
                                 :city => "Washington",
                                 :state => "DC",
                                 :postal_code => "20500"},
-                               {:postal_code => "90210"}], :distanceUnit => :mi
+                               {:postal_code => "90210"}],
+                              :distanceUnit => :mi
 
   puts "#{response.distance} #{response.distance_units.to_s}.pluralize, #{response.duration} seconds"
   # "2665.06415 miles, 137797 seconds"
