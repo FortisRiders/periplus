@@ -2,7 +2,7 @@
 
 Bing Maps REST API client.
 
-= TO USE
+== Use it
   require 'periplus'
 
   my_request = Periplus::Request.new 'my_bing_key'
