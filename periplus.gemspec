@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Crum"]
   s.date = %q{2011-06-16}
-  s.description = %q{TODO: longer description of your gem}
+  s.description = %q{A library that behaves as a client for the Bing Maps REST sdk}
   s.email = %q{ryan.j.crum@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/periplus.rb",
+    "periplus.gemspec",
     "spec/request_spec.rb",
     "spec/route_spec.rb",
     "spec/spec_helper.rb"

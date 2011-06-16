@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/thorstadt/periplus"
   gem.license = "MIT"
   gem.summary = %Q{Bing Maps REST Client}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.description = %Q{A library that behaves as a client for the Bing Maps REST sdk}
   gem.email = "ryan.j.crum@gmail.com"
   gem.authors = ["Ryan Crum"]
   # dependencies defined in Gemfile
