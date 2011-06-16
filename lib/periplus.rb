@@ -13,7 +13,6 @@ module Periplus
       base_url = "http://dev.virtualearth.net/REST/v1/Routes"
       options = options.merge hashify_waypoints(waypoints)
       options = options.merge :o => "json", :key => @key
-      puts "sending options: #{options}"
       Route.new (self.class.get base_url, :query => options.merge(hashify_waypoints(waypoints)))
     end
 
