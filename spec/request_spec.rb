@@ -29,4 +29,26 @@ describe "Request" do
       "wp.3" => "Louisville, KY"
     }
   end
+
+  it "formats an address object correctly" do
+    class PeriplusAddress
+      attr_accessor :address
+      attr_accessor :city
+      attr_accessor :state
+      attr_accessor :country
+      attr_accessor :postal_code
+    end
+
+    address = PeriplusAddress.new 
+    address.address = "1600 Pennsylvania Ave"
+    address.city = "Washington"
+    address.state = "DC"
+    address.country = "US"
+    address.postal_code = 20500
+    
+    req = Periplus::Request.new 'fake key'
+    formatted = req.send :format_waypoint, address
+
+    formatted.should == "1600 Pennsylvania Ave Washington, DC US 20500"
+  end
 end
