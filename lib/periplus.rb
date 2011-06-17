@@ -101,7 +101,7 @@ module Periplus
       raise "No route found." if resource_sets == nil or resource_sets.length == 0
 
       resources = resource_sets.first["resources"]
-      raise "No route found." if resources  == nil or resources.length == 0
+      raise "No route found." if resources == nil or resources.length == 0
 
       primary_route = resources.first
       
