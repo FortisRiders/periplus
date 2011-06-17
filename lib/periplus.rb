@@ -53,9 +53,9 @@ module Periplus
     def format_waypoint(waypoint)
       return waypoint if waypoint.instance_of? String
       
-      if WAYPOINT_FORMAT.find_all { |el| el.instance_of? Symbol }.any? do |key|
-          has_key_or_attribute?(waypoint, key)
-        end
+      if WAYPOINT_FORMAT
+          .find_all { |el| el.instance_of? Symbol }
+          .any? { |key| has_key_or_attribute?(waypoint, key) }
         
         # find all matching elements
         q = WAYPOINT_FORMAT.map do |attr|
@@ -99,9 +99,11 @@ module Periplus
     def parse_resource_sets      
       resource_sets = @response.parsed_response["resourceSets"]
       raise "No route found." if resource_sets == nil or resource_sets.length == 0
-      raise "No route found." if resource_sets.first["resources"] == nil or resource_sets.first["resources"].length == 0
 
-      primary_route = resource_sets.first["resources"].first
+      resources = resource_sets.first["resources"]
+      raise "No route found." if resources  == nil or resources.length == 0
+
+      primary_route = resources.first
       
       @distance = primary_route["travelDistance"]
       @distance_unit = primary_route["distanceUnit"].downcase.to_sym
