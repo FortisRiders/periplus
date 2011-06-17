@@ -9,7 +9,7 @@ describe "Route" do
     begin
       Periplus::Route.new(response)
     rescue Exception => e
-      e.message.should == "An error has occurred communicating with the Bing Maps service. HTTP Status: 401 : Unauthorized"
+      e.message.should == "An error has occurred communicating with the Bing Maps service. HTTP Status: 401 (Unauthorized)"
     end
   end
 
