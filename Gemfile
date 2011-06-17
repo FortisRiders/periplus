@@ -7,6 +7,7 @@ source "http://rubygems.org"
 # Include everything needed to run rake, tests, features, etc.
 
 gem "httparty"
+gem "activesupport"
 
 group :development do
   gem "rspec", "~> 2.4.0"

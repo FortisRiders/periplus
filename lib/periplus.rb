@@ -9,11 +9,20 @@ module Periplus
       @api_key = api_key
     end
     
-    BING_URL = "http://dev.virtualearth.net/REST/v1/Routes"
+    BING_URL = "http://dev.virtualearth.net/REST/v1/"
+    ROUTE_PATH = "Routes"
+    IMAGE_PATH = "Imagery/Map/Road/Routes/Driving"
     def route(waypoints, options = {})
       options = options.merge(hashify_waypoints(waypoints))
                        .merge(:o => "json", :key => @api_key)
-      Route.new (self.class.get BING_URL, :query => options)
+      Route.new (self.class.get "#{BING_URL}#{ROUTE_PATH}", :query => options)
+    end
+
+    def route_map_url(waypoints, options = {})
+      options = options.merge(hashify_waypoints(waypoints))
+                       .merge(:key => @api_key)
+      query_string = options.to_params
+      "#{BING_URL}#{IMAGE_PATH}?#{query_string}"
     end
 
    private
