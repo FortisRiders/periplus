@@ -42,7 +42,7 @@ describe "Request" do
     req = Periplus::Request.new 'fake_key'
     address = "Anchorage, AK"
     url = req.address_map_url address
-    url.should == "http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/Anchorage%2C+AK?key=fake_key"
+    url.should == "http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/Anchorage,%20AK?key=fake_key"
   end
 
   it "formats an address object correctly" do
