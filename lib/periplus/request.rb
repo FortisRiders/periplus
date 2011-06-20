@@ -9,12 +9,13 @@ module Periplus
     
     BING_URL = "http://dev.virtualearth.net/REST/v1/"
     ROUTE_PATH = "Routes"
+    LOCATION_PATH = "Locations"
     ROUTE_IMAGE_PATH = "Imagery/Map/Road/Routes/Driving"
     QUERY_IMAGE_PATH = "Imagery/Map/Road/"
     
     def route_details_url(waypoints, options = {})
-      options = default_options(options.merge(hashify_waypoints(waypoints))
-                                  .merge(:o => "json"))
+      options = default_options(options).merge(hashify_waypoints(waypoints))
+                                        .merge(:o => "json")
 
       "#{BING_URL}#{ROUTE_PATH}?#{options.to_params}"
     end
@@ -28,6 +29,12 @@ module Periplus
     def address_map_url(address, options = {})
       options = default_options(options)
       "#{BING_URL}#{QUERY_IMAGE_PATH}#{CGI.escape(format_waypoint(address))}?#{options.to_params}"
+    end
+
+    def location_details_url(address, options = {})
+      options = default_options(options).merge(:o => "json")
+                                        .merge(structure_address(address))
+      "#{BING_URL}#{LOCATION_PATH}?#{options.to_params}"
     end
 
    private
@@ -51,13 +58,42 @@ module Periplus
     end
 
     def get_by_key_or_attribute(object, key_or_attribute)
-      if object.respond_to? :has_key? and object.has_key? key_or_attribute
-        object[key_or_attribute]
+      if object.respond_to? :has_key?
+        if object.has_key? key_or_attribute
+          object[key_or_attribute]
+        end
       elsif object.respond_to? key_or_attribute
         object.send key_or_attribute
       end
     end
     
+    ADDRESS_STRUCTURE = {
+      :street => :addressLine,
+      :address => :addressLine,
+      :city => :locality,
+      :state => :adminDistrict,
+      :province => :adminDistrict,
+      :state_province => :adminDistrict,
+      :country => :countryRegion,
+      :postal_code => :postalCode,
+      :zip_code => :postalCode,
+      :zipcode => :postalCode,
+      :zip => :postalCode
+    }
+
+    def structure_address(address)
+      ADDRESS_STRUCTURE.inject({}) do |structured, key_val|
+        unconverted, converted = key_val
+        
+        if has_key_or_attribute? address, converted
+          structured[converted] = get_by_key_or_attribute address, converted
+        elsif has_key_or_attribute? address, unconverted
+          structured[converted] = get_by_key_or_attribute address, unconverted
+        end
+        structured
+      end
+    end
+
     WAYPOINT_FORMAT = [:street, 
                        :address, 
                        :city, 
@@ -66,7 +102,10 @@ module Periplus
                        :province, 
                        :state_province, 
                        :country, 
-                       :postal_code]
+                       :postal_code,
+                       :zipcode,
+                       :zip_code,
+                       :zip]
 
     def format_waypoint(waypoint)
       return waypoint if waypoint.instance_of? String
