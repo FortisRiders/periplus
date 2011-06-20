@@ -38,6 +38,12 @@ describe "Request" do
     url.should == "http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/Routes/Driving?wp.1=New%20York%2C%20NY&wp.2=Buffalo%2C%20NY&wp.3=Louisville%2C%20KY&key=fake_key"
   end
 
+  it "generates an address map url correctly" do
+    req = Periplus::Request.new 'fake_key'
+    address = "Anchorage, AK"
+    url = req.address_map_url address
+    url.should == "http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/Anchorage%2C+AK?key=fake_key"
+  end
 
   it "formats an address object correctly" do
     class PeriplusAddress

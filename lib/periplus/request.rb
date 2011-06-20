@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/route")
+require "cgi"
 
 module Periplus
   class Request    
@@ -26,7 +27,7 @@ module Periplus
 
     def address_map_url(address, options = {})
       options = default_options(options)
-      "#{BING_URL}#{QUERY_IMAGE_PATH}#{format_waypoint(address)}?#{options.to_params}"
+      "#{BING_URL}#{QUERY_IMAGE_PATH}#{CGI.escape(format_waypoint(address))}?#{options.to_params}"
     end
 
    private
