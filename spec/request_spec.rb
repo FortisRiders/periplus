@@ -80,4 +80,11 @@ describe "Request" do
     url = req.location_details_url address
     url.should == "http://dev.virtualearth.net/REST/v1/Locations?key=fake%20key&o=json&addressLine=1600%20Pennsylvania%20Ave&locality=Washington&adminDistrict=DC&countryRegion=US&postalCode=20500"
   end
+
+  it "builds a location details url from a query string correctly" do
+    address = "1600 Pennsylvania Ave Washington, DC"
+    req = Periplus::Request.new 'fake key'
+    url = req.location_details_url address
+    url.should == "http://dev.virtualearth.net/REST/v1/Locations?key=fake%20key&o=json&query=1600%20Pennsylvania%20Ave%20Washington%2C%20DC"
+  end
 end

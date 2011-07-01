@@ -82,6 +82,8 @@ module Periplus
     }
 
     def structure_address(address)
+      return {:query => address} if address.kind_of? String
+
       ADDRESS_STRUCTURE.inject({}) do |structured, key_val|
         unconverted, converted = key_val
         
