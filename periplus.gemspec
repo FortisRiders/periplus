@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{periplus}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Crum"]
-  s.date = %q{2011-06-16}
+  s.date = %q{2011-06-22}
   s.description = %q{A library that behaves as a client for the Bing Maps REST sdk}
   s.email = %q{ryan.j.crum@gmail.com}
   s.extra_rdoc_files = [
@@ -26,7 +26,14 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/periplus.rb",
+    "lib/periplus/bing_response.rb",
+    "lib/periplus/location.rb",
+    "lib/periplus/request.rb",
+    "lib/periplus/route.rb",
     "periplus.gemspec",
+    "spec/bing_response.spec",
+    "spec/location_spec.rb",
+    "spec/periplus_spec.rb",
     "spec/request_spec.rb",
     "spec/route_spec.rb",
     "spec/spec_helper.rb"
@@ -42,12 +49,14 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<httparty>, [">= 0"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.4.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.2"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
     else
       s.add_dependency(%q<httparty>, [">= 0"])
+      s.add_dependency(%q<activesupport>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.4.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.2"])
@@ -55,6 +64,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<httparty>, [">= 0"])
+    s.add_dependency(%q<activesupport>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.4.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.2"])
