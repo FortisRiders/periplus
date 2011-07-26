@@ -7,7 +7,7 @@ module Periplus
       @api_key = api_key
     end
     
-    BING_URL = "http://dev.virtualearth.net/REST/v1/"
+    BING_MAPS_URL = "http://dev.virtualearth.net/REST/v1/"
     ROUTE_PATH = "Routes"
     LOCATION_PATH = "Locations"
     ROUTE_IMAGE_PATH = "Imagery/Map/Road/Routes/Driving"
@@ -17,24 +17,48 @@ module Periplus
       options = default_options(options).merge(hashify_waypoints(waypoints))
                                         .merge(:o => "json")
 
-      "#{BING_URL}#{ROUTE_PATH}?#{options.to_params}"
+      "#{BING_MAPS_URL}#{ROUTE_PATH}?#{options.to_params}"
     end
 
-    def route_map_url(waypoints, options = {})
+    # Generate a URL for a routes map.
+    #
+    # * waypoints is a list of hashes or objects with properties or keys like
+    #   street, address, city, state, province, etc.
+    # * pushpins is an optional list of hashes with :latitude, :longitude, 
+    #   :type (optional -- 1, 2, 3, etc. per the bing spec) or :label (optional -- no longer than 2 characters per bing spec)
+    # * options is a hash that gets turned directly into url params for bing
+    def route_map_url(waypoints, pushpins = [], options = {})
       options = options.merge(hashify_waypoints(waypoints))
                        .merge(:key => @api_key)
-      "#{BING_URL}#{ROUTE_IMAGE_PATH}?#{options.to_params}"
+      base = "#{BING_MAPS_URL}#{ROUTE_IMAGE_PATH}?#{options.to_params}"
+      if pushpins and pushpins.length > 0
+        formatted_pins = pushpins.map {|p| "pp=#{format_pushpin(p)}" }.join '&'
+        base = "#{base}&#{formatted_pins}" if pushpins
+      end
+      base
     end
 
-    def address_map_url(address, options = {})
+    # Generate a URL for a location map
+    #
+    # * address is a hash or object with properties or keys like
+    #   street, address, city, state, province, etc.
+    # * pushpins is an optional list of hashes with :latitude, :longitude, 
+    #   :type (optional -- 1, 2, 3, etc. per the bing spec) or :label (optional -- no longer than 2 characters per bing spec)
+    # * options is a hash that gets turned directly into url params for bing
+    def address_map_url(address, pushpins = [], options = {})
       options = default_options(options)
-      "#{BING_URL}#{QUERY_IMAGE_PATH}#{URI.escape(format_waypoint(address))}?#{options.to_params}"
+      base = "#{BING_MAPS_URL}#{QUERY_IMAGE_PATH}#{URI.escape(format_waypoint(address))}?#{options.to_params}"
+      if pushpins and pushpins.length > 0
+        formatted_pins = pushpins.map {|p| "pp=#{format_pushpin(p)}" }.join '&'
+        base = "#{base}&#{formatted_pins}" if pushpins
+      end
+      base
     end
 
     def location_details_url(address, options = {})
       options = default_options(options).merge(:o => "json")
                                         .merge(structure_address(address))
-      "#{BING_URL}#{LOCATION_PATH}?#{options.to_params}"
+      "#{BING_MAPS_URL}#{LOCATION_PATH}?#{options.to_params}"
     end
 
    private
@@ -65,6 +89,10 @@ module Periplus
       elsif object.respond_to? key_or_attribute
         object.send key_or_attribute
       end
+    end
+
+    def format_pushpin(pushpin)
+      "#{pushpin[:latitude]},#{pushpin[:longitude]};#{pushpin[:type] || ""};#{pushpin[:label] || ""}"
     end
     
     ADDRESS_STRUCTURE = {
