@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
     "lib/periplus/request.rb",
     "lib/periplus/route.rb",
     "periplus.gemspec",
-    "spec/bing_response.spec",
+    "spec/bing_response_spec.rb",
     "spec/location_spec.rb",
     "spec/periplus_spec.rb",
     "spec/request_spec.rb",
