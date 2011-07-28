@@ -8,6 +8,16 @@ module Periplus
   include HTTParty
   format :json
 
+  @verbose = false
+  
+  def self.verbose=(value)
+    @verbose = value
+  end
+  
+  def self.verbose
+    @verbose
+  end
+  
   def self.route_details(key, waypoints, options = {})
     request = Request.new key
     url = request.route_details_url waypoints, options
