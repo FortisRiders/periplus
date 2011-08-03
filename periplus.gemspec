@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{periplus}
-  s.version = "0.2.1"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Ryan Crum"]
-  s.date = %q{2011-07-01}
+  s.authors = [%q{Ryan Crum}]
+  s.date = %q{2011-08-03}
   s.description = %q{A library that behaves as a client for the Bing Maps REST sdk}
   s.email = %q{ryan.j.crum@gmail.com}
   s.extra_rdoc_files = [
@@ -39,9 +39,9 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/thorstadt/periplus}
-  s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
+  s.licenses = [%q{MIT}]
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.5.1}
   s.summary = %q{Bing Maps REST Client}
 
   if s.respond_to? :specification_version then

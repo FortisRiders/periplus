@@ -98,6 +98,7 @@ module Periplus
     ADDRESS_STRUCTURE = {
       :street => :addressLine,
       :address => :addressLine,
+      :name => :addressLine,
       :city => :locality,
       :state => :adminDistrict,
       :province => :adminDistrict,
@@ -116,9 +117,9 @@ module Periplus
         unconverted, converted = key_val
         
         if has_key_or_attribute? address, converted
-          structured[converted] = get_by_key_or_attribute address, converted
+          structured[converted] ||= get_by_key_or_attribute address, converted
         elsif has_key_or_attribute? address, unconverted
-          structured[converted] = get_by_key_or_attribute address, unconverted
+          structured[converted] ||= get_by_key_or_attribute address, unconverted
         end
         structured
       end
@@ -139,6 +140,14 @@ module Periplus
 
     def format_waypoint(waypoint)
       return waypoint if waypoint.instance_of? String
+      
+      # use lat/long if provided
+      if has_key_or_attribute?(waypoint, :latitude) and
+          has_key_or_attribute?(waypoint, :longitude)
+        latitude = get_by_key_or_attribute waypoint, :latitude
+        longitude = get_by_key_or_attribute waypoint, :longitude
+        return "#{latitude},#{longitude}" if latitude and longitude
+      end
       
       if WAYPOINT_FORMAT
           .find_all { |el| el.instance_of? Symbol }

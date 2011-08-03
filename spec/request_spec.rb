@@ -47,11 +47,11 @@ describe "Request" do
 
   it "formats an address object correctly" do
     class PeriplusAddress
-      attr_accessor :address
-      attr_accessor :city
-      attr_accessor :state
-      attr_accessor :country
-      attr_accessor :postal_code
+      attr_accessor :address,
+        :city,
+        :state,
+        :country,
+        :postal_code
     end
 
     address = PeriplusAddress.new 
@@ -65,6 +65,32 @@ describe "Request" do
     formatted = req.send :format_waypoint, address
 
     formatted.should == "1600 Pennsylvania Ave Washington, DC US 20500"
+  end
+
+  it "formats an address object correctly with latitude/longitude" do
+    class PeriplusAddress
+      attr_accessor :address, 
+        :city,
+        :state,
+        :country,
+        :postal_code,
+        :latitude,
+        :longitude  
+    end
+
+    address = PeriplusAddress.new 
+    address.address = "1600 Pennsylvania Ave"
+    address.city = "Washington"
+    address.state = "DC"
+    address.country = "US"
+    address.postal_code = 20500
+    address.latitude = "40.32332"
+    address.longitude = "-2.32142"
+    
+    req = Periplus::Request.new 'fake key'
+    formatted = req.send :format_waypoint, address
+
+    formatted.should == "40.32332,-2.32142"
   end
 
   it "builds a location details url correctly" do
@@ -86,6 +112,35 @@ describe "Request" do
     req = Periplus::Request.new 'fake key'
     url = req.location_details_url address
     url.should == "http://dev.virtualearth.net/REST/v1/Locations?key=fake%20key&o=json&query=1600%20Pennsylvania%20Ave%20Washington%2C%20DC"
+  end
+
+  it "builds a location details url correctly with a place name" do
+    address = {
+      :name => "The White House",
+      :city => "Washington",
+      :state => "DC",
+      :country => "US",
+      :zip => 20500
+    }
+
+    req = Periplus::Request.new 'fake key'
+    url = req.location_details_url address
+    url.should == "http://dev.virtualearth.net/REST/v1/Locations?key=fake%20key&o=json&addressLine=The%20White%20House&locality=Washington&adminDistrict=DC&countryRegion=US&postalCode=20500"
+  end
+
+  it "builds a location details url correctly with a place name and an address" do
+    address = {
+      :name => "The White House",
+      :street => "1600 Pennsylvania Ave",
+      :city => "Washington",
+      :state => "DC",
+      :country => "US",
+      :zip => 20500
+    }
+
+    req = Periplus::Request.new 'fake key'
+    url = req.location_details_url address
+    url.should == "http://dev.virtualearth.net/REST/v1/Locations?key=fake%20key&o=json&addressLine=1600%20Pennsylvania%20Ave&locality=Washington&adminDistrict=DC&countryRegion=US&postalCode=20500"
   end
 
   it "formats pushpins correctly" do
